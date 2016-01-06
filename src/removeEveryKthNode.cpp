@@ -12,29 +12,45 @@ NOTES:
 */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 struct node {
 	int num;
 	struct node *next;
 };
+void del(struct node *head, int n)
+{
+	struct node *temp1 = head;
+	int i;
+	for (i = 0; i <= n - 2; i++)
+		temp1 = temp1->next;
+	struct node *temp2 = temp1->next;
+	temp1->next = temp2->next;
+	free(temp2);
+}
 
 struct node * removeEveryKthNode(struct node *head, int K) {
-	if (K<0||K==0||K==1||head==NULL)
-	return NULL;
-	struct node *temp = head,*crnt=head;
-	int i=1;
-	while (temp != NULL)
+	int count = 1;
+	struct node *p, *q;
+	p = head;
+	if (head == NULL)
 	{
-		crnt = temp;
-		temp = temp->next;
-		i++;
-		if (i%K == 0)
-		{
-			crnt->next = temp->next;
-			temp = crnt->next;
-		}
+		return NULL;
 	}
-	if (i%K==0)
-		crnt->next = NULL;
-	return head;
+	else if (K == 1 || K == 0 || K<0)
+		return NULL;
+	else
+	{
+		while (p->next != NULL)
+		{
+			q = p;
+			p = p->next;
+			count = count + 1;
+			if (count%K == 0)
+			{
+				q->next = p->next;
+			}
+		}
+		return head;
+	}
 }
